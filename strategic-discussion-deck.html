@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Right Questions, Not Right Answers — Level Consulting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE6;
+  --bg-deep: #ECE5D5;
+  --ink: #1B1815;
+  --ink-soft: #4A453E;
+  --ink-muted: #7A7268;
+  --rule: #C9BFA8;
+  --accent: #8C5A2D;
+  --accent-deep: #5C3A18;
+  --accent-soft: #D9C7A7;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--ink); }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.55;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.slide-deck {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+@media (min-width: 769px) {
+  .slide-deck {
+    max-width: calc(100vh * 16 / 9);
+    max-height: calc(100vw * 9 / 16);
+    margin: auto;
+    position: absolute;
+    inset: 0;
+  }
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: 5.5vh 6vw;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.45s ease;
+  background: var(--bg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.slide.active { opacity: 1; visibility: visible; }
+
+/* Editorial typography */
+.eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(10px, 0.95vw, 13px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 2.4vh;
+}
+h1.cover-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(40px, 6.6vw, 88px);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+h1.cover-title em {
+  font-style: italic;
+  color: var(--accent-deep);
+}
+h2.slide-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(28px, 4.2vw, 56px);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-bottom: 3vh;
+}
+h2.slide-title em {
+  font-style: italic;
+  color: var(--accent-deep);
+}
+h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(18px, 1.8vw, 24px);
+  line-height: 1.25;
+  color: var(--ink);
+  margin-bottom: 0.6em;
+  letter-spacing: -0.005em;
+}
+
+.body { font-size: clamp(14px, 1.25vw, 19px); color: var(--ink-soft); max-width: 80ch; }
+.body p + p { margin-top: 0.9em; }
+.body strong { color: var(--ink); font-weight: 600; }
+.body em { color: var(--accent-deep); font-style: italic; }
+
+.lede {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(20px, 2.2vw, 30px);
+  line-height: 1.35;
+  color: var(--ink);
+  max-width: 32ch;
+  font-style: italic;
+}
+
+.rule {
+  height: 1px;
+  background: var(--rule);
+  margin: 3vh 0;
+  width: 100%;
+}
+.rule-short {
+  height: 1px;
+  background: var(--rule);
+  margin: 1.6vh 0;
+  width: 64px;
+}
+
+/* Layout helpers */
+.flex-col { display: flex; flex-direction: column; }
+.flex-row { display: flex; flex-direction: row; }
+.gap-md { gap: 3vh; }
+.gap-lg { gap: 4.5vh; }
+.between { justify-content: space-between; }
+.grow { flex-grow: 1; }
+.center { justify-content: center; }
+.middle { align-items: center; }
+
+/* Lists */
+.body ul, .body ol { list-style: none; padding-left: 0; }
+.body ul li, .body ol li {
+  position: relative;
+  padding-left: 1.4em;
+  margin-bottom: 0.7em;
+}
+.body ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 0.6em;
+  height: 1px;
+  background: var(--accent);
+}
+.body ol { counter-reset: item; }
+.body ol li {
+  counter-increment: item;
+  padding-left: 2.2em;
+}
+.body ol li::before {
+  content: counter(item, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8em;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+/* Pull quote */
+.pullquote {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(18px, 1.95vw, 28px);
+  line-height: 1.4;
+  color: var(--ink);
+  border-left: 2px solid var(--accent);
+  padding-left: 2.4vw;
+  max-width: 60ch;
+}
+.pullquote-attr {
+  margin-top: 1.4vh;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-size: clamp(11px, 1vw, 14px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  font-weight: 500;
+}
+
+/* Three-column matrix */
+.matrix {
+  display: grid;
+  grid-template-columns: 0.9fr 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin-top: 2vh;
+}
+.matrix > div {
+  padding: 1.6vh 1.5vw;
+  border-right: 1px solid var(--rule);
+  font-size: clamp(12px, 1.05vw, 15px);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.matrix > div:last-child { border-right: none; }
+.matrix > div.label {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(15px, 1.4vw, 21px);
+  color: var(--ink);
+}
+.matrix-header > div {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(10px, 0.85vw, 12px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--bg-deep);
+  font-weight: 500;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+}
+
+/* Two-column lists */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3vw;
+}
+.two-col h3 { margin-bottom: 1vh; }
+
+/* Stats / labels */
+.label-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 0.85vw, 12px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 0.35em 0.8em;
+  border-radius: 2px;
+}
+
+/* Footer */
+.slide-footer {
+  position: absolute;
+  bottom: 3vh;
+  left: 6vw;
+  right: 6vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(9px, 0.8vw, 12px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.slide-footer .num { color: var(--accent); font-weight: 500; }
+
+/* Cover */
+.cover {
+  justify-content: space-between;
+  background: var(--bg);
+}
+.cover .meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 0.95vw, 13px);
+  color: var(--ink-muted);
+  letter-spacing: 0.08em;
+}
+.cover .meta strong { color: var(--ink); font-weight: 500; }
+
+/* Progress bar */
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.35s ease;
+  z-index: 1000;
+}
+
+/* Nav */
+.nav-controls {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 1000;
+  background: var(--bg);
+  padding: 6px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+}
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-btn:hover { background: var(--bg-deep); }
+.slide-counter {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink-muted);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+.slide-counter span { color: var(--ink); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .slide { padding: 4vh 6vw; }
+  h1.cover-title { font-size: clamp(32px, 7vw, 56px); }
+  h2.slide-title { font-size: clamp(22px, 5vw, 36px); }
+  .matrix { grid-template-columns: 1fr; }
+  .matrix > div { border-right: none; border-bottom: 1px solid var(--rule); }
+  .matrix > div:last-child { border-bottom: none; }
+  .two-col { grid-template-columns: 1fr; gap: 2.5vh; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="slide-deck">
+
+<!-- ============ SLIDE 1 — COVER ============ -->
+<div class="slide cover active">
+  <div class="meta"><strong>Level Consulting</strong> · Strategic Conversation</div>
+  <div class="flex-col gap-md">
+    <div class="eyebrow">Lev &harr; Sanjay · May 2026</div>
+    <h1 class="cover-title">Right questions,<br><em>not right answers.</em></h1>
+    <div class="rule-short" style="margin-top: 2.5vh;"></div>
+    <p class="body" style="max-width: 56ch;">
+      A working document for a conversation. Not a pitch.<br>
+      A map of what I have done, what I am wrestling with,<br>
+      and where your pattern-matching is irreplaceable.
+    </p>
+  </div>
+  <div class="meta">Lev Fendrikov · admin@levelrealestate.ca</div>
+</div>
+
+<!-- ============ SLIDE 2 — THE ASK ============ -->
+<div class="slide">
+  <div class="eyebrow">02 · Why this conversation</div>
+  <h2 class="slide-title">I am not here to ask whether my idea is good.</h2>
+  <div class="body" style="max-width: 70ch;">
+    <p>I am eight weeks into building something. I have a name, a wedge product, a methodology, a soft-launched first prospect. I do not yet have a clear shape for the business itself.</p>
+    <p>You built a firm in telecom and energy that scaled. You worked the industry first, then started the firm. You have lived the question I am asking — <em>what shape should this take</em> — and answered it, in your domain, over decades.</p>
+    <p>What I am here for: <strong>the questions I should be asking myself right now, and the ones I am missing entirely.</strong></p>
+    <p>What I am offering in return: honesty about where I am, candor about what I do not know, and — if useful to you — a tour of what AI inside the build actually looks like.</p>
+  </div>
+  <div class="slide-footer"><span>Right Questions, Not Right Answers</span><span class="num">02 / 13</span></div>
+</div>
+
+<!-- ============ SLIDE 3 — WHERE I AM ============ -->
+<div class="slide">
+  <div class="eyebrow">03 · Where I am today</div>
+  <h2 class="slide-title">A snapshot of the operator <em>before</em> the bet.</h2>
+  <div class="two-col body" style="max-width: none;">
+    <div>
+      <h3>Family</h3>
+      <p>Married. Two kids. One furry kid.</p>
+      <h3 style="margin-top: 2.5vh;">Real estate</h3>
+      <p>Two triplexes in Belleville, Ontario. One BRRRR conversion with two ADUs. Personal portfolio is the sandbox where I learn what I do not know about being on the operator side.</p>
+    </div>
+    <div>
+      <h3>Day job</h3>
+      <p>Lead Solutions Consultant at Braze (~30B msgs/day SaaS). Stepped up from MoEngage in March. Significant pay bump. New at the bottom of the totem pole.</p>
+      <p style="margin-top: 0.7em;">My private read: <em>this category of role does not exist in 12–24 months in its current form.</em> I would rather choose my exit than have it chosen for me.</p>
+      <h3 style="margin-top: 2.5vh;">The thing I am building</h3>
+      <p>Level Consulting. Soft-launched May 4 with a property-management partner who runs 100+ units in Timmins (10-unit + SFH co-owned with me). First real test case. Free pilot, paid managed services after — hopefully.</p>
+    </div>
+  </div>
+  <div class="slide-footer"><span>Right Questions, Not Right Answers</span><span class="num">03 / 13</span></div>
+</div>
+
+<!-- ============ SLIDE 4 — WHAT I'VE BUILT ============ -->
+<div class="slide">
+  <div class="eyebrow">04 · What I have actually built</div>
+  <h2 class="slide-title">LeasingAgent. Running on my own unit.</h2>
+  <div class="body" style="max-width: 72ch;">
+    <p>An end-to-end leasing operating system, in production today on 34 Hastings Drive, Belleville.</p>
+    <ul style="margin-top: 1.6vh;">
+      <li><strong>Intake form &rarr; comprehensive online screening</strong>
+        <ul style="margin-top: 0.5em; margin-left: 0.4em;">
+          <li>OpenRoom — Landlord &amp; Tenant Board judgment history</li>
+          <li>Social media (FB, Instagram, LinkedIn) — verify identity, online presence, no red flags</li>
+          <li>Google search — news articles, arrests, public-record red flags</li>
+        </ul>
+      </li>
+      <li><strong>Automated, intelligent document review</strong> — Vision LLM, categorical verdicts</li>
+      <li>Conversational SMS bot built on a managed Anthropic agent (shipped May 4)</li>
+      <li>Categorical AI scoring (Weak / Moderate / Strong / Exceptional) with written reasoning</li>
+      <li>Manual decision gates at screening, doc review, secondary screening — <em>AI surfaces, human decides</em></li>
+      <li>~40 DB tables · 9 agent skills · ~15K LOC for deterministic tenant pipeline management</li>
+    </ul>
+    <p style="margin-top: 1.8vh;"><em>Real applicants. Real SMS. Real lease decisions. Not a demo environment.</em> I built it for myself first — six weeks of personal use before pitching anyone.</p>
+  </div>
+  <div class="slide-footer"><span>Right Questions, Not Right Answers</span><span class="num">04 / 13</span></div>
+</div>
+
+<!-- ============ SLIDE 5 — FIRST TEST CASE ============ -->
+<div class="slide">
+  <div class="eyebrow">05 · The first real test case</div>
+  <h2 class="slide-title">Tuesday's discovery call. <em>The pattern is universal.</em></h2>
+  <div class="body" style="max-width: 70ch;">
+    <p>67-minute call with a property-management operator. Two portfolios — 50 doors in Niagara, a growing book in Timmins including a fresh 13-unit project. Twelve discrete stages from listing to keys.</p>
+    <ul style="margin-top: 1.6vh;">
+      <li>Three different systems-of-record. Zero source-of-truth.</li>
+      <li>Five silent failure modes — disqualified leads ghosted, no-shows treated as attendees, doc requests scattered across email, reference outcomes lost to memory, move-in checklists inconsistent.</li>
+      <li>The principal herself is the bottleneck on the highest-value stages. The VAs handle the dispatch.</li>
+      <li>A third-party lead-management tool that almost certainly violates Meta's Terms of Service via session-cookie impersonation. If enforcement catches up, her primary lead channel disappears overnight.</li>
+    </ul>
+    <p style="margin-top: 1.8vh;">The diagnosis pattern repeated almost cleanly from my own pre-build process. <strong>The methodology is portable. The question is what shape the practice should take.</strong></p>
+  </div>
+  <div class="slide-footer"><span>Right Questions, Not Right Answers</span><span class="num">05 / 13</span></div>
+</div>
+
+<!-- ============ SLIDE 6 — MACRO CONTEXT ============ -->
+<div class="slide">
+  <div class="eyebrow">06 · The macro context</div>
+  <h2 class="slide-title">Where consulting <em>is going.</em></h2>
+  <div class="flex-row gap-lg" style="margin-top: 1vh;">
+    <div style="flex: 1;" class="body">
+      <p>The thesis from a recent industry pod, paraphrased:</p>
+      <p style="margin-top: 1.4vh;">The pyramid of junior labor producing analysis and decks is the part AI eats first. What survives is the work that combines an <strong>intelligence platform</strong>, <strong>domain expertise</strong>, and <strong>change management</strong>.</p>
+      <p style="margin-top: 1.4vh;">The model shifts from <em>experts-to-rent</em> to <em>transformation operating system</em>. The firms that keep selling headcount lose.</p>
+      <p style="margin-top: 1.4vh;">The remaining surface area is where the defensible work lives.</p>
+    </div>
+    <div style="flex: 1;" class="body">
+      <h3 style="margin-bottom: 1.4vh;">The new shape — three axes</h3>
+      <ol>
+        <li><strong>Intelligence platform.</strong> The agents, models, and tooling that do the actual work.</li>
+        <li><strong>Domain expertise.</strong> The operator-grade knowledge that tells the platform <em>what</em> to do.</li>
+        <li><strong>Change management.</strong> The human capacity to make a client organization adopt and trust the new system.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="slide-footer"><span>Right Questions, Not Right Answers</span><span class="num">06 / 13</span></div>
+</div>
+
+<!-- ============ SLIDE 7 — A TEMPORARY ADVANTAGE ============ -->
+<div class="slide">
+  <div class="eyebrow">07 · A temporary advantage</div>
+  <h2 class="slide-title">The window is <em>shorter than it looks.</em></h2>
+  <div class="body" style="max-width: 72ch;">
+    <p>Today, agentic capabilities are <strong>difficult to learn, difficult to adapt, and require massive change management</strong> to actually implement inside a business. That is the gap I am positioned to serve.</p>
+    <p style="margin-top: 1.6vh;">But these tools are only a few months into their lifecycle. Every Frontier Lab release makes them easier to use, easier to deploy, more self-serve.</p>
+    <div class="rule" style="margin: 3vh 0 2.4vh;"></div>
+    <p class="lede" style="max-width: 60ch;">The strategic question I am wrestling with:</p>
+    <p style="margin-top: 1.6vh; font-size: clamp(15px, 1.4vw, 20px);">Am I going to dedicate all this time to becoming an expert in <em>how to use and adopt</em> these tools — when that knowledge becomes irrelevant the moment models are smart and flexible enough to drop into any workflow, any tech stack? When the Frontier Labs themselves move into the verticals and productize the roles inside them directly?</p>
+  </div>
+  <div class="slide-footer"><span>Right Questions, Not Right Answers</span><span class="num">07 / 13</span></div>
+</div>
+
+<!-- ============ SLIDE 8 — THREE FORMS ============ -->
+<div class="slide">
+  <div class="eyebrow">08 · Three forms my venture could take</div>
+  <h2 class="slide-title">Three real levers. <em>Not exclusive.</em></h2>
+  <div class="matrix">
+    <div class="matrix-header" style="display: contents;">
+      <div>FORM</div>
+      <div>STRENGTHS</div>
+      <div>RISKS</div>
+    </div>
+    <div class="label">SaaS / Productized<br><span style="font-family: 'Inter'; font-weight: 400; font-size: 0.7em; color: var(--ink-muted); letter-spacing: 0;">LeasingAgent or its successor sold as software, monthly per-door</span></div>
+    <div>Scales without my hours. Recurring revenue. Defensible if the wedge is right.</div>
+    <div>Slow to revenue. SaaS apocalypse — moat closes as foundation models eat the playbook. Requires capital and full commitment I do not yet have.</div>
+
+    <div class="label">Agency / Implementation<br><span style="font-family: 'Inter'; font-weight: 400; font-size: 0.7em; color: var(--ink-muted); letter-spacing: 0;">Build, train, parachute out. One-time. Custom.</span></div>
+    <div>Cash-positive immediately. Highest LTV per client. Lets me work the wedge while learning what scales.</div>
+    <div>Capped by my hours. Trains clients to think of me as a vendor, not a system. Hard to capitalize on later.</div>
+
+    <div class="label">Advisory / Consulting<br><span style="font-family: 'Inter'; font-weight: 400; font-size: 0.7em; color: var(--ink-muted); letter-spacing: 0;">Deeply learn. Design the transformation. Guide change.</span></div>
+    <div>Highest leverage on the change-management surface area Moonshots calls defensible. Most aligned with what mature operator time is worth.</div>
+    <div>Requires a credibility premium I have not yet earned. Demands clients sophisticated enough to value strategy over hands-on implementation.</div>
+  </div>
+  <p class="body" style="margin-top: 2.4vh; max-width: 70ch;">Most firms I admire run two of three, sequenced. The <em>shape</em> question is which sequence, in what order, with what weight.</p>
+  <div class="slide-footer"><span>Right Questions, Not Right Answers</span><span class="num">08 / 13</span></div>
+</div>
+
+<!-- ============ SLIDE 9 — WAT FRAMEWORK ============ -->
+<div class="slide">
+  <div class="eyebrow">09 · How I work — the WAT framework</div>
+  <h2 class="slide-title">Workflows. Agents. Tools.</h2>
+  <div class="body" style="max-width: 78ch;">
+    <p>The methodology behind the build, three layers, transparent and named.</p>
+    <div class="rule-short" style="margin-top: 2vh;"></div>
+    <h3 style="margin-top: 1.4vh;"><span class="label-tag">W</span>&nbsp;&nbsp;Workflows</h3>
+    <p>The client's process as it actually runs today, written as a SOP a new hire could read on day one. I do not skip this step. I do not delegate it. <em>The first deliverable in any engagement is the WAT map.</em></p>
+    <h3 style="margin-top: 2vh;"><span class="label-tag">A</span>&nbsp;&nbsp;Agents</h3>
+    <p>The decision logic. <em>What does "qualified" mean for this portfolio? What is an automatic decline? What needs a human gate?</em> Every rule explicit, every judgment call surfaced.</p>
+    <h3 style="margin-top: 2vh;"><span class="label-tag">T</span>&nbsp;&nbsp;Tools</h3>
+    <p>The deterministic scripts that execute. SMS sender. Doc reviewer. Database updater. <em>Boring on purpose — boring is reliable.</em></p>
+    <p style="margin-top: 2.2vh;">"We use AI" sounds like a hobby. <strong>"WAT-mapped operations" sounds like a system.</strong> It is one. It also gives the client something they own when I leave — a map, not a dependency.</p>
+  </div>
+  <div class="slide-footer"><span>Right Questions, Not Right Answers</span><span class="num">09 / 13</span></div>
+</div>
+
+<!-- ============ SLIDE 10 — WHAT I THINK TODAY ============ -->
+<div class="slide" style="justify-content: flex-start;">
+  <div class="eyebrow">10 · What I think today</div>
+  <h2 class="slide-title">My current hypothesis. <em>Held loosely.</em></h2>
+  <div class="flex-row gap-lg" style="width: 100%;">
+    <div style="flex: 1;" class="body">
+      <p style="font-size: clamp(13px, 1.15vw, 17px);">If forced to commit to a shape this week, here is my best guess.</p>
+      <ol style="margin-top: 1.4vh; font-size: clamp(13px, 1.15vw, 17px);">
+        <li><strong>Phase 1 — Build (now &rarr; ~12 months).</strong> Lead with implementation. Bespoke, premium, low-volume. Free pilot with one design partner; paid build engagements with the next three. The work teaches me which form compounds.</li>
+        <li><strong>Phase 2 — Pattern (months 12–24).</strong> Productize the patterns that repeat. Forms-fill engine, leasing pipeline, doc-review skill — each becomes a packaged capability. Margin improves. Repeat clients become the ICP.</li>
+        <li><strong>Phase 3 — Platform (months 24+).</strong> Either the SaaS thesis is real and platform becomes the business, or the consulting practice has compounded into an "intelligence platform plus domain expertise plus change management" firm — and the SaaS is a feature, not the business.</li>
+      </ol>
+      <p style="margin-top: 2vh; font-size: clamp(13px, 1.15vw, 17px);"><strong>The risk:</strong> Phase 1 is cash-positive enough to anesthetize me into staying there forever. Many implementation shops never graduate.</p>
+    </div>
+    <div style="flex: 1;" class="body">
+      <h3 style="margin-bottom: 1.4vh;">The build-phase questions <em>I have not yet answered.</em></h3>
+      <ol style="font-size: clamp(13px, 1.15vw, 17px);">
+        <li><strong>Scope.</strong> How do I scope the pilot so I am not spending endless hours building for them, for free?</li>
+        <li><strong>Repurposability.</strong> How do I make sure that what I build is shift-able, repurpose-able, and modular enough to be reused in the next engagement — instead of dying as one-off custom code?</li>
+        <li><strong>Element selection.</strong> Do I cherry-pick only the elements of their process where I am confident other clients will have the same problem — and skip the parts that are too specific or too basic to generalize?</li>
+      </ol>
+    </div>
+  </div>
+  <div class="slide-footer"><span>Right Questions, Not Right Answers</span><span class="num">10 / 13</span></div>
+</div>
+
+<!-- ============ SLIDE 11 — QUESTIONS I'M WRESTLING WITH ============ -->
+<div class="slide">
+  <div class="eyebrow">11 · The questions I am wrestling with</div>
+  <h2 class="slide-title">In rough order of <em>how often they keep me up.</em></h2>
+  <div class="two-col body" style="max-width: none;">
+    <div>
+      <ol>
+        <li><strong>Productize or stay bespoke?</strong> When does the cost of bespoke exceed the learning value of bespoke?</li>
+        <li><strong>Single vertical or horizontal pattern?</strong> Narrow-deep or wide-shallow first?</li>
+        <li><strong>Pricing model.</strong> Project. Per-door. Retainer. Outcome-based. Each shapes the kind of business I become. I have not committed.</li>
+        <li><strong>What is the moat in eighteen months?</strong> When foundation models commoditize the build, what is left? My current bet — trust, domain depth, change management. Is that enough?</li>
+      </ol>
+    </div>
+    <div>
+      <ol start="5">
+        <li><strong>The day job.</strong> The same trend that makes my consulting business possible is the trend that ends roles like the one I just took. Stay until forced out, or jump on my own timing?</li>
+        <li><strong>The US move.</strong> Build for Ontario only, or build cross-border from day one?</li>
+        <li><strong>Scaling without losing operator-grade quality.</strong> Hire? Subcontract? Train operators inside client orgs? Stay solo?</li>
+        <li><strong>Burnout.</strong> Day job + family + side build + portfolio + a third baby. What did people who survived this stage actually cut?</li>
+      </ol>
+    </div>
+  </div>
+  <div class="slide-footer"><span>Right Questions, Not Right Answers</span><span class="num">11 / 13</span></div>
+</div>
+
+<!-- ============ SLIDE 12 — QUESTIONS FOR YOU ============ -->
+<div class="slide">
+  <div class="eyebrow">12 · The questions I want to ask you</div>
+  <h2 class="slide-title">Pick whichever ones <em>you want to engage with.</em></h2>
+  <div class="body" style="max-width: 82ch;">
+    <ol style="margin-top: 1vh;">
+      <li><strong>How did your firm decide its shape?</strong> Was it a deliberate choice, or did your first three clients shape it before you had a chance to choose?</li>
+      <li><strong>The first inflection point.</strong> A first hire? A first repeat client? A reframed offer? A particular engagement? What was the moment when the firm became a firm, not a freelancer?</li>
+      <li><strong>Bespoke vs. productized in your industry.</strong> How did you balance custom client work with reusable IP and capabilities? Was there a point where one ate the other?</li>
+      <li><strong>What you wish you had known.</strong> The piece of advice you wish someone had given you before you went full-time on the firm. The thing you learned the expensive way.</li>
+      <li><strong>Who else should I be talking to — and when?</strong> Not for an introduction unless it feels natural. Just — whose pattern would round out yours?</li>
+    </ol>
+  </div>
+  <div class="slide-footer"><span>Right Questions, Not Right Answers</span><span class="num">12 / 13</span></div>
+</div>
+
+<!-- ============ SLIDE 13 — WHAT I HOPE TO LEAVE WITH ============ -->
+<div class="slide">
+  <div class="eyebrow">13 · What I hope to walk away with</div>
+  <h2 class="slide-title">Three things. <em>None of them a decision.</em></h2>
+  <div class="body" style="max-width: 72ch;">
+    <ol style="margin-top: 1.5vh;">
+      <li><strong>Your unfiltered reaction</strong> to slide 8 (the three forms) and slide 10 (what I think today). Specifically: which form looks more or less viable than I am giving it credit for.</li>
+      <li><strong>The question I am not asking</strong> that, from where you sit, I should be. The one I cannot prepare for, and the one most likely to change the trajectory.</li>
+      <li><strong>Permission to come back.</strong> I do not expect a single conversation to give me a plan. I expect this to be the first of a few — if it is useful to you. If it is not, that is also a useful signal.</li>
+    </ol>
+    <div class="rule"></div>
+    <p>In return: a tour of what AI inside the build actually looks like, including parts that may matter to your firm in the next 24 months, at whatever depth is useful to you, on your time.</p>
+    <p style="margin-top: 2vh;"><em>Thank you for the time today. The conversation is the deliverable.</em></p>
+  </div>
+  <div class="slide-footer"><span>Lev Fendrikov · Level Consulting · admin@levelrealestate.ca</span><span class="num">13 / 13</span></div>
+</div>
+
+</div><!-- /.slide-deck -->
+
+<div class="nav-controls">
+  <button class="nav-btn" onclick="prevSlide()" aria-label="Previous">&larr;</button>
+  <span class="slide-counter"><span id="current">1</span> / <span id="total">13</span></span>
+  <button class="nav-btn" onclick="nextSlide()" aria-label="Next">&rarr;</button>
+</div>
+
+<script>
+let current = 1;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+document.getElementById('total').textContent = total;
+
+function showSlide(n) {
+  if (n < 1) n = 1;
+  if (n > total) n = total;
+  current = n;
+  slides.forEach((s, i) => s.classList.toggle('active', i === n - 1));
+  document.getElementById('current').textContent = n;
+  document.getElementById('progressBar').style.width = (n / total * 100) + '%';
+}
+function nextSlide() { showSlide(current + 1); }
+function prevSlide() { showSlide(current - 1); }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+  if (e.key === 'Home') { e.preventDefault(); showSlide(1); }
+  if (e.key === 'End') { e.preventDefault(); showSlide(total); }
+});
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.nav-controls')) nextSlide();
+});
+
+showSlide(1);
+</script>
+</body>
+</html>
