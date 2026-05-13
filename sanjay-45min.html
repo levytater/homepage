@@ -77,10 +77,6 @@ h1.cover-title {
   letter-spacing: -0.02em;
   color: var(--ink);
 }
-h1.cover-title em {
-  font-style: italic;
-  color: var(--accent-deep);
-}
 h2.slide-title {
   font-family: 'Fraunces', Georgia, serif;
   font-weight: 400;
@@ -89,10 +85,6 @@ h2.slide-title {
   letter-spacing: -0.015em;
   color: var(--ink);
   margin-bottom: 3vh;
-}
-h2.slide-title em {
-  font-style: italic;
-  color: var(--accent-deep);
 }
 h3 {
   font-family: 'Fraunces', Georgia, serif;
@@ -107,7 +99,6 @@ h3 {
 .body { font-size: clamp(14px, 1.25vw, 19px); color: var(--ink-soft); max-width: 80ch; }
 .body p + p { margin-top: 0.9em; }
 .body strong { color: var(--ink); font-weight: 600; }
-.body em { color: var(--accent-deep); font-style: italic; }
 
 .rule { height: 1px; background: var(--rule); margin: 3vh 0; width: 100%; }
 .rule-short { height: 1px; background: var(--rule); margin: 1.6vh 0; width: 64px; }
@@ -116,19 +107,15 @@ h3 {
 .flex-row { display: flex; flex-direction: row; }
 .gap-md { gap: 3vh; }
 .gap-lg { gap: 4.5vh; }
-.between { justify-content: space-between; }
-.grow { flex-grow: 1; }
-.center { justify-content: center; }
-.middle { align-items: center; }
 
 /* Numbered question lists */
-.q-list { list-style: none; padding-left: 0; counter-reset: q; max-width: 78ch; }
+.q-list { list-style: none; padding-left: 0; counter-reset: q; max-width: 80ch; }
 .q-list li {
   counter-increment: q;
   position: relative;
   padding-left: 2.6em;
   margin-bottom: 1.3em;
-  font-size: clamp(14px, 1.25vw, 18px);
+  font-size: clamp(14px, 1.2vw, 18px);
   line-height: 1.5;
   color: var(--ink-soft);
 }
@@ -143,15 +130,14 @@ h3 {
   letter-spacing: 0.05em;
 }
 .q-list li strong { color: var(--ink); font-weight: 600; }
-.q-list li em { color: var(--accent-deep); font-style: italic; }
 
-/* Snapshot table */
+/* Snapshot key/value table */
 .snap {
   display: grid;
   grid-template-columns: 8.5em 1fr;
   gap: 1.4vh 2vw;
   margin-top: 1.5vh;
-  max-width: 78ch;
+  max-width: 80ch;
 }
 .snap > .k {
   font-family: 'JetBrains Mono', monospace;
@@ -166,9 +152,22 @@ h3 {
   color: var(--ink);
   line-height: 1.5;
 }
-.snap > .v em { color: var(--accent-deep); font-style: italic; }
-.snap > .v strong { color: var(--ink); font-weight: 600; }
 .snap > .v .muted { color: var(--ink-muted); }
+.snap > .v strong { color: var(--ink); font-weight: 600; }
+
+/* Flagged snapshot row — used for the "Form" question */
+.snap > .v.flag {
+  border-left: 2px solid var(--accent);
+  padding-left: 14px;
+  font-weight: 500;
+}
+.snap > .v.flag .note {
+  display: block;
+  margin-top: 0.4em;
+  font-weight: 400;
+  color: var(--accent-deep);
+  font-size: 0.94em;
+}
 
 /* Two-column compare (math table) */
 .compare {
@@ -177,13 +176,12 @@ h3 {
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
   margin-top: 1.6vh;
-  max-width: none;
 }
 .compare > div {
   padding: 1.6vh 1.6vw;
   border-right: 1px solid var(--rule);
   font-size: clamp(13px, 1.1vw, 16px);
-  line-height: 1.55;
+  line-height: 1.6;
   color: var(--ink-soft);
 }
 .compare > div:last-child { border-right: none; }
@@ -199,22 +197,14 @@ h3 {
   padding-bottom: 1.1vh;
   border-bottom: 1px solid var(--rule);
 }
-.compare .verdict {
-  font-family: 'Fraunces', Georgia, serif;
-  font-style: italic;
-  font-size: clamp(15px, 1.4vw, 20px);
-  color: var(--ink);
-  margin-top: 1em;
-  display: block;
-}
 .compare .num {
   font-family: 'JetBrains Mono', monospace;
   color: var(--ink);
   font-weight: 500;
 }
 
-/* Three-form mini-grid (slide 4) */
-.forms { display: grid; grid-template-columns: 11em 1fr; gap: 0.9em 1.6vw; margin: 1.4vh 0 2.4vh; max-width: 78ch; }
+/* Three-form mini-grid */
+.forms { display: grid; grid-template-columns: 10em 1fr; gap: 0.9em 1.6vw; margin: 1.4vh 0 2.4vh; max-width: 80ch; }
 .forms > .label {
   font-family: 'Fraunces', Georgia, serif;
   font-size: clamp(15px, 1.35vw, 20px);
@@ -225,9 +215,20 @@ h3 {
   font-size: clamp(13px, 1.1vw, 16px);
   color: var(--ink-soft);
   line-height: 1.45;
-  padding-top: 0.2em;
+  padding-top: 0.25em;
 }
-.forms > .desc em { color: var(--accent-deep); font-style: italic; }
+
+/* Callout block — used for value-exchange line */
+.callout {
+  border-left: 2px solid var(--accent);
+  padding: 0.4em 0 0.4em 16px;
+  margin-top: 2.4vh;
+  max-width: 78ch;
+  font-size: clamp(14px, 1.2vw, 18px);
+  color: var(--ink);
+  line-height: 1.55;
+}
+.callout strong { font-weight: 600; }
 
 .slide-footer {
   position: absolute;
@@ -319,123 +320,120 @@ h3 {
 <div class="slide cover active">
   <div class="meta"><strong>Level Consulting</strong> &middot; 2026-05</div>
   <div class="flex-col gap-md">
-    <div class="eyebrow">Lev &harr; Sanjay &middot; 45 minutes</div>
-    <h1 class="cover-title">Where I'm at.<br><em>What I'm asking.</em></h1>
-    <div class="rule-short" style="margin-top: 2.5vh;"></div>
-    <p class="body" style="max-width: 50ch;">
-      First principles. No pitch.<br>
-      Three buckets of questions: <em>segment, shape, bet.</em>
-    </p>
+    <div class="eyebrow">Lev &amp; Sanjay &middot; 45 minutes</div>
+    <h1 class="cover-title">Where I'm at.<br>What I'm asking.</h1>
   </div>
   <div class="meta">Lev Fendrikov &middot; admin@levelrealestate.ca</div>
 </div>
 
-<!-- ============ 2 · SNAPSHOT ============ -->
+<!-- ============ 2 · CALIBRATION + VALUE EXCHANGE ============ -->
+<div class="slide">
+  <div class="eyebrow">First &mdash; how are you using AI?</div>
+  <h2 class="slide-title">Helps me calibrate.</h2>
+  <p class="body" style="max-width: 72ch;">A few quick ones so I know whether to talk plain-English or use jargon (one-shot, deterministic vs. agentic workflows, etc.).</p>
+  <ol class="q-list" style="margin-top: 1.6vh;">
+    <li>Tracking AI at the <strong>macro level</strong>? (Your LinkedIn suggests yes.)</li>
+    <li>At the <strong>tactical level</strong> &mdash; you or your team building agents?</li>
+    <li>Using <strong>agentic tools</strong> (Claude Code, Cursor, autonomous coding agents) inside Stratica X today?</li>
+  </ol>
+  <div class="callout">
+    <strong>Can I be at all helpful to you?</strong> Free demo, hands-on agent build, sit with your team for a session, anything else &mdash; whatever would actually be valuable. Just tell me.
+  </div>
+  <div class="slide-footer"><span>Where I'm at &middot; What I'm asking</span><span class="num">02 / 06</span></div>
+</div>
+
+<!-- ============ 3 · SNAPSHOT ============ -->
 <div class="slide">
   <div class="eyebrow">The snapshot</div>
-  <h2 class="slide-title">8 weeks in. <em>No firm shape committed.</em></h2>
+  <h2 class="slide-title">8 weeks in. No firm shape yet.</h2>
   <div class="snap">
     <div class="k">Built</div>
     <div class="v">LeasingAgent. End-to-end leasing OS for residential PM. <span class="muted">In production on my own unit (Belleville, ON) since April. Real applicants, real SMS, real lease decisions.</span></div>
 
     <div class="k">Pilot</div>
-    <div class="v">Jing &middot; 100+ door PM, Timmins + Niagara. <span class="muted">Discovery call done. Free build for design partner. Paid managed-service after &mdash; <em>hopefully.</em></span></div>
+    <div class="v">Jing &middot; 100+ door PM in Timmins + Niagara. <span class="muted">Discovery call done. Free build for design partner, paid managed-service after &mdash; hopefully.</span></div>
 
     <div class="k">Paying</div>
     <div class="v"><strong>Zero.</strong> <span class="muted">No firm revenue yet.</span></div>
 
     <div class="k">Day job</div>
-    <div class="v">Sr. Solutions Consultant @ Braze (~30B msgs/day SaaS). <span class="muted">Stepped up from MoEngage in March. My read: <em>this category of role does not exist in 12&ndash;24 months.</em></span></div>
+    <div class="v">Sr. Solutions Consultant @ Braze (~30B msgs/day SaaS). <span class="muted">Stepped up from MoEngage in March. My read: this category of role doesn't exist in 12&ndash;24 months.</span></div>
 
     <div class="k">Personal</div>
     <div class="v">Wife, two kids. Two triplexes in Belleville. One BRRRR with two ADUs.</div>
 
     <div class="k">Form</div>
-    <div class="v"><strong>Unknown.</strong> Not SaaS. Not agency. Not advisory. All three are real options. <em>None are committed to.</em></div>
+    <div class="v flag">Unknown &mdash; SaaS, agency, or advisory. <span class="note">One of the main things I want your read on today.</span></div>
   </div>
-  <div class="slide-footer"><span>Where I'm at &middot; What I'm asking</span><span class="num">02 / 06</span></div>
+  <div class="slide-footer"><span>Where I'm at &middot; What I'm asking</span><span class="num">03 / 06</span></div>
 </div>
 
-<!-- ============ 3 · SEGMENT ============ -->
+<!-- ============ 4 · SEGMENT ============ -->
 <div class="slide">
-  <div class="eyebrow">Segment &middot; Who I serve</div>
+  <div class="eyebrow">The niche question</div>
   <h2 class="slide-title">The math I keep running.</h2>
   <div class="compare">
-    <div class="head">SMB PM &middot; what I'm built for</div>
-    <div class="head">Enterprise PM &middot; what I'm not</div>
+    <div class="head">SMB PM &middot; what my current build is anchored to</div>
+    <div class="head">Enterprise PM</div>
 
     <div>
       <span class="num">100</span> doors &middot; ~<span class="num">25%</span> gross margin<br>
       Value of full leasing automation: <span class="num">~$20K / yr</span><br>
-      My max addressable price (~25% capture): <span class="num">~$5K / yr</span><br><br>
-      To reach <span class="num">$200K</span> consulting revenue: <span class="num">~40</span> SMBs.<br>
-      At <span class="num">1&ndash;3</span> closes / quarter: <span class="num">4&ndash;10 years</span>.
-      <span class="verdict">Math is bad.</span>
+      My max addressable price (~25% capture): <span class="num">~$5K / yr / customer</span><br><br>
+      To reach <span class="num">$200K</span> revenue: ~<span class="num">40</span> SMBs.<br>
+      At <span class="num">1&ndash;3</span> closes per quarter: <span class="num">4&ndash;10 years</span>.
     </div>
     <div>
       <span class="num">10,000+</span> doors<br>
       Single project budget: <span class="num">$300K &ndash; $1M</span><br>
       Sales cycle: <span class="num">6&ndash;12</span> months<br><br>
-      At <span class="num">3&ndash;5</span> closes / year: <span class="num">$1&ndash;5M</span> revenue.<br>
-      But: <em>incumbents own the workflow</em> (Yardi, AppFolio, Buildium, Entrata).
-      <span class="verdict">Math works. Moat is hard.</span>
+      At <span class="num">3&ndash;5</span> closes per year: <span class="num">$1&ndash;5M</span> revenue.<br>
+      But: incumbents own the workflow (Yardi, AppFolio, Buildium, Entrata).
     </div>
   </div>
-  <ol class="q-list" style="margin-top: 2.6vh;">
-    <li>Did you ever try down-market and reject it? <strong>What killed it?</strong></li>
-    <li><strong>Vertical or horizontal.</strong> Stratica X is vertical (digital infra), horizontal across the stack. How did you pick that breadth &mdash; and when does a segment's economics actually warrant going there?</li>
-    <li>If you were me, would you stay where the <em>gains</em> are, or move where the <em>dollars</em> are?</li>
-  </ol>
-  <div class="slide-footer"><span>Where I'm at &middot; What I'm asking</span><span class="num">03 / 06</span></div>
-</div>
-
-<!-- ============ 4 · SHAPE ============ -->
-<div class="slide">
-  <div class="eyebrow">Shape &middot; What the practice looks like</div>
-  <h2 class="slide-title">Three forms. <em>None committed to.</em></h2>
-  <div class="forms">
-    <div class="label">SaaS</div>
-    <div class="desc">Productized, per-door, recurring. <em>Slow to revenue. AI-eaten if the wedge is wrong.</em></div>
-
-    <div class="label">Agency</div>
-    <div class="desc">Build, train, parachute out. <em>Cash-positive. Hours-capped. Vendor-trap.</em></div>
-
-    <div class="label">Advisory</div>
-    <div class="desc">Diagnose, design, guide change. <em>Highest leverage. Credibility-gated.</em></div>
-  </div>
-  <ol class="q-list">
-    <li>How did Stratica X's shape <strong>emerge</strong> &mdash; deliberate, or shaped by the first three clients?</li>
-    <li><strong>Pricing.</strong> Retainer / project / outcome / equity. What actually captures real value in a boutique?</li>
-    <li><strong>Bench model.</strong> You activate operators on mandates. How &mdash; without W-2 overhead or contractor flake?</li>
-    <li>The <strong>first inflection moment</strong>: when did "freelancer" become "firm"?</li>
+  <ol class="q-list" style="margin-top: 2.4vh;">
+    <li><strong>Does the small-landlord / SMB PM ICP even make sense?</strong> My read from research is probably not &mdash; slim margins, owner-operators pivot tools and tactics constantly (so cost-to-serve is high), stickiness is short and LTV is low. Want your pulse check.</li>
+    <li><strong>The build is portable.</strong> Same patterns work in adjacent verticals &mdash; e.g. realtors (I have a license and practice; could automate ~80% of the role). Does it make more sense to apply this to a vertical I already know than to go deeper in PM?</li>
+    <li><strong>You operate at a much higher tier than what I'm circling.</strong> How did you get there?</li>
   </ol>
   <div class="slide-footer"><span>Where I'm at &middot; What I'm asking</span><span class="num">04 / 06</span></div>
 </div>
 
-<!-- ============ 5 · BET ============ -->
+<!-- ============ 5 · SHAPE ============ -->
 <div class="slide">
-  <div class="eyebrow">Bet &middot; What I'm betting against</div>
-  <h2 class="slide-title">The macro questions.</h2>
+  <div class="eyebrow">The shape question</div>
+  <h2 class="slide-title">Three forms. None committed to.</h2>
+  <div class="forms">
+    <div class="label">SaaS</div>
+    <div class="desc">Productized, recurring revenue. Slow to revenue. If the wedge is wrong, models eat it.</div>
+
+    <div class="label">Agency</div>
+    <div class="desc">Build, train, hand off. Cash-positive but capped by my hours.</div>
+
+    <div class="label">Advisory</div>
+    <div class="desc">Diagnose, design, guide change. Highest leverage. Hard to get clients to pay for it.</div>
+  </div>
   <ol class="q-list">
-    <li><strong>18-month commoditization.</strong> Today, agentic builds are hard to learn, hard to deploy, change-management heavy. Every Frontier Lab release flattens that. <em>What's left in a boutique when the build itself is undifferentiated?</em></li>
-    <li><strong>Day-job exit timing.</strong> The trend that makes this consulting business possible is the trend that ends my Braze role. <em>Fold on my timing, or get folded?</em></li>
-    <li><strong>Geography.</strong> Build for Ontario only, or cross-border from day one? US market is <span style="font-family: 'JetBrains Mono', monospace; color: var(--ink);">10&times;</span>; ICP is different.</li>
-    <li><strong>What did you learn the expensive way</strong> in year one of Stratica X?</li>
+    <li>How did Stratica X's shape <strong>emerge</strong> &mdash; shaped by the initial clients?</li>
+    <li><strong>Pricing.</strong> Retainer / project / outcome / equity. What captures real value in a small firm?</li>
+    <li>Saw on your LinkedIn you've built a <strong>bench of operators</strong>. How did you develop it? When does it make sense to pull them in? Where do you find them? How do you vet them? How do you pay them?</li>
+    <li>When did this go from <strong>freelancer to firm</strong>?</li>
   </ol>
   <div class="slide-footer"><span>Where I'm at &middot; What I'm asking</span><span class="num">05 / 06</span></div>
 </div>
 
-<!-- ============ 6 · ASKS ============ -->
+<!-- ============ 6 · PILOT MECHANICS ============ -->
 <div class="slide">
-  <div class="eyebrow">What I want from you</div>
-  <h2 class="slide-title">Three asks. <em>None of them a decision.</em></h2>
-  <ol class="q-list" style="margin-top: 1vh;">
-    <li><strong>Gut reaction on slide 3.</strong> The math says I picked the wrong segment. You picked the opposite. Was it obvious from day one, or did you arrive there?</li>
-    <li><strong>The question I'm not asking.</strong> The one I cannot prepare for, and the one most likely to change the trajectory.</li>
-    <li><strong>Permission to come back.</strong> I don't expect one conversation to give me a plan. I expect a few &mdash; if it's useful to you. If not, that's also a useful signal.</li>
+  <div class="eyebrow">Pilot mechanics</div>
+  <h2 class="slide-title">How did you start?</h2>
+  <ol class="q-list">
+    <li>How did you <strong>scope</strong> your first pilots?</li>
+    <li>How did you <strong>price</strong> them &mdash; fixed, hourly, retainer, success fee, equity?</li>
+    <li>What does the <strong>deliverable</strong> shape look like for an unproven boutique's first engagement?</li>
+    <li><strong>Free vs paid</strong> first pilot &mdash; what actually worked?</li>
   </ol>
   <div class="rule"></div>
-  <p class="body" style="max-width: 70ch;">In return: when useful, a tour of what AI inside the build <em>actually</em> looks like. On your time, at whatever depth helps. Thanks for the 45.</p>
+  <p class="body" style="max-width: 70ch;">Thanks for the 45.</p>
   <div class="slide-footer"><span>Lev Fendrikov &middot; admin@levelrealestate.ca</span><span class="num">06 / 06</span></div>
 </div>
 
