@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanjay · 45 min — Level Consulting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4EFE6;
+  --bg-deep: #ECE5D5;
+  --ink: #1B1815;
+  --ink-soft: #4A453E;
+  --ink-muted: #7A7268;
+  --rule: #C9BFA8;
+  --accent: #8C5A2D;
+  --accent-deep: #5C3A18;
+  --accent-soft: #D9C7A7;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--ink); }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.55;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.slide-deck {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+@media (min-width: 769px) {
+  .slide-deck {
+    max-width: calc(100vh * 16 / 9);
+    max-height: calc(100vw * 9 / 16);
+    margin: auto;
+    position: absolute;
+    inset: 0;
+  }
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: 5.5vh 6vw;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.45s ease;
+  background: var(--bg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.slide.active { opacity: 1; visibility: visible; }
+
+.eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(10px, 0.95vw, 13px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 2.4vh;
+}
+h1.cover-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(40px, 6.6vw, 88px);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+h1.cover-title em {
+  font-style: italic;
+  color: var(--accent-deep);
+}
+h2.slide-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(28px, 4.2vw, 56px);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-bottom: 3vh;
+}
+h2.slide-title em {
+  font-style: italic;
+  color: var(--accent-deep);
+}
+h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  font-size: clamp(18px, 1.8vw, 24px);
+  line-height: 1.25;
+  color: var(--ink);
+  margin-bottom: 0.6em;
+  letter-spacing: -0.005em;
+}
+
+.body { font-size: clamp(14px, 1.25vw, 19px); color: var(--ink-soft); max-width: 80ch; }
+.body p + p { margin-top: 0.9em; }
+.body strong { color: var(--ink); font-weight: 600; }
+.body em { color: var(--accent-deep); font-style: italic; }
+
+.rule { height: 1px; background: var(--rule); margin: 3vh 0; width: 100%; }
+.rule-short { height: 1px; background: var(--rule); margin: 1.6vh 0; width: 64px; }
+
+.flex-col { display: flex; flex-direction: column; }
+.flex-row { display: flex; flex-direction: row; }
+.gap-md { gap: 3vh; }
+.gap-lg { gap: 4.5vh; }
+.between { justify-content: space-between; }
+.grow { flex-grow: 1; }
+.center { justify-content: center; }
+.middle { align-items: center; }
+
+/* Numbered question lists */
+.q-list { list-style: none; padding-left: 0; counter-reset: q; max-width: 78ch; }
+.q-list li {
+  counter-increment: q;
+  position: relative;
+  padding-left: 2.6em;
+  margin-bottom: 1.3em;
+  font-size: clamp(14px, 1.25vw, 18px);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.q-list li::before {
+  content: counter(q, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78em;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+.q-list li strong { color: var(--ink); font-weight: 600; }
+.q-list li em { color: var(--accent-deep); font-style: italic; }
+
+/* Snapshot table */
+.snap {
+  display: grid;
+  grid-template-columns: 8.5em 1fr;
+  gap: 1.4vh 2vw;
+  margin-top: 1.5vh;
+  max-width: 78ch;
+}
+.snap > .k {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(11px, 0.95vw, 14px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-top: 0.18em;
+}
+.snap > .v {
+  font-size: clamp(14px, 1.2vw, 18px);
+  color: var(--ink);
+  line-height: 1.5;
+}
+.snap > .v em { color: var(--accent-deep); font-style: italic; }
+.snap > .v strong { color: var(--ink); font-weight: 600; }
+.snap > .v .muted { color: var(--ink-muted); }
+
+/* Two-column compare (math table) */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  margin-top: 1.6vh;
+  max-width: none;
+}
+.compare > div {
+  padding: 1.6vh 1.6vw;
+  border-right: 1px solid var(--rule);
+  font-size: clamp(13px, 1.1vw, 16px);
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.compare > div:last-child { border-right: none; }
+.compare > div.head {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(10px, 0.85vw, 12px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--bg-deep);
+  font-weight: 500;
+  padding-top: 1.1vh;
+  padding-bottom: 1.1vh;
+  border-bottom: 1px solid var(--rule);
+}
+.compare .verdict {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(15px, 1.4vw, 20px);
+  color: var(--ink);
+  margin-top: 1em;
+  display: block;
+}
+.compare .num {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* Three-form mini-grid (slide 4) */
+.forms { display: grid; grid-template-columns: 11em 1fr; gap: 0.9em 1.6vw; margin: 1.4vh 0 2.4vh; max-width: 78ch; }
+.forms > .label {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(15px, 1.35vw, 20px);
+  color: var(--ink);
+  font-weight: 500;
+}
+.forms > .desc {
+  font-size: clamp(13px, 1.1vw, 16px);
+  color: var(--ink-soft);
+  line-height: 1.45;
+  padding-top: 0.2em;
+}
+.forms > .desc em { color: var(--accent-deep); font-style: italic; }
+
+.slide-footer {
+  position: absolute;
+  bottom: 3vh;
+  left: 6vw;
+  right: 6vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(9px, 0.8vw, 12px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.slide-footer .num { color: var(--accent); font-weight: 500; }
+
+.cover { justify-content: space-between; background: var(--bg); }
+.cover .meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(10px, 0.95vw, 13px);
+  color: var(--ink-muted);
+  letter-spacing: 0.08em;
+}
+.cover .meta strong { color: var(--ink); font-weight: 500; }
+
+.progress-bar {
+  position: fixed; top: 0; left: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.35s ease;
+  z-index: 1000;
+}
+.nav-controls {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 1000;
+  background: var(--bg);
+  padding: 6px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+}
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-btn:hover { background: var(--bg-deep); }
+.slide-counter {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink-muted);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+.slide-counter span { color: var(--ink); }
+
+@media (max-width: 768px) {
+  .slide { padding: 4vh 6vw; }
+  h1.cover-title { font-size: clamp(32px, 7vw, 56px); }
+  h2.slide-title { font-size: clamp(22px, 5vw, 36px); }
+  .compare { grid-template-columns: 1fr; }
+  .compare > div { border-right: none; border-bottom: 1px solid var(--rule); }
+  .compare > div:last-child { border-bottom: none; }
+  .snap { grid-template-columns: 1fr; gap: 0.3vh 0; }
+  .snap > .k { padding-top: 1.2vh; }
+  .forms { grid-template-columns: 1fr; gap: 0.3em 0; }
+  .forms > .desc { padding-bottom: 1em; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="slide-deck">
+
+<!-- ============ 1 · COVER ============ -->
+<div class="slide cover active">
+  <div class="meta"><strong>Level Consulting</strong> &middot; 2026-05</div>
+  <div class="flex-col gap-md">
+    <div class="eyebrow">Lev &harr; Sanjay &middot; 45 minutes</div>
+    <h1 class="cover-title">Where I'm at.<br><em>What I'm asking.</em></h1>
+    <div class="rule-short" style="margin-top: 2.5vh;"></div>
+    <p class="body" style="max-width: 50ch;">
+      First principles. No pitch.<br>
+      Three buckets of questions: <em>segment, shape, bet.</em>
+    </p>
+  </div>
+  <div class="meta">Lev Fendrikov &middot; admin@levelrealestate.ca</div>
+</div>
+
+<!-- ============ 2 · SNAPSHOT ============ -->
+<div class="slide">
+  <div class="eyebrow">The snapshot</div>
+  <h2 class="slide-title">8 weeks in. <em>No firm shape committed.</em></h2>
+  <div class="snap">
+    <div class="k">Built</div>
+    <div class="v">LeasingAgent. End-to-end leasing OS for residential PM. <span class="muted">In production on my own unit (Belleville, ON) since April. Real applicants, real SMS, real lease decisions.</span></div>
+
+    <div class="k">Pilot</div>
+    <div class="v">Jing &middot; 100+ door PM, Timmins + Niagara. <span class="muted">Discovery call done. Free build for design partner. Paid managed-service after &mdash; <em>hopefully.</em></span></div>
+
+    <div class="k">Paying</div>
+    <div class="v"><strong>Zero.</strong> <span class="muted">No firm revenue yet.</span></div>
+
+    <div class="k">Day job</div>
+    <div class="v">Sr. Solutions Consultant @ Braze (~30B msgs/day SaaS). <span class="muted">Stepped up from MoEngage in March. My read: <em>this category of role does not exist in 12&ndash;24 months.</em></span></div>
+
+    <div class="k">Personal</div>
+    <div class="v">Wife, two kids. Two triplexes in Belleville. One BRRRR with two ADUs.</div>
+
+    <div class="k">Form</div>
+    <div class="v"><strong>Unknown.</strong> Not SaaS. Not agency. Not advisory. All three are real options. <em>None are committed to.</em></div>
+  </div>
+  <div class="slide-footer"><span>Where I'm at &middot; What I'm asking</span><span class="num">02 / 06</span></div>
+</div>
+
+<!-- ============ 3 · SEGMENT ============ -->
+<div class="slide">
+  <div class="eyebrow">Segment &middot; Who I serve</div>
+  <h2 class="slide-title">The math I keep running.</h2>
+  <div class="compare">
+    <div class="head">SMB PM &middot; what I'm built for</div>
+    <div class="head">Enterprise PM &middot; what I'm not</div>
+
+    <div>
+      <span class="num">100</span> doors &middot; ~<span class="num">25%</span> gross margin<br>
+      Value of full leasing automation: <span class="num">~$20K / yr</span><br>
+      My max addressable price (~25% capture): <span class="num">~$5K / yr</span><br><br>
+      To reach <span class="num">$200K</span> consulting revenue: <span class="num">~40</span> SMBs.<br>
+      At <span class="num">1&ndash;3</span> closes / quarter: <span class="num">4&ndash;10 years</span>.
+      <span class="verdict">Math is bad.</span>
+    </div>
+    <div>
+      <span class="num">10,000+</span> doors<br>
+      Single project budget: <span class="num">$300K &ndash; $1M</span><br>
+      Sales cycle: <span class="num">6&ndash;12</span> months<br><br>
+      At <span class="num">3&ndash;5</span> closes / year: <span class="num">$1&ndash;5M</span> revenue.<br>
+      But: <em>incumbents own the workflow</em> (Yardi, AppFolio, Buildium, Entrata).
+      <span class="verdict">Math works. Moat is hard.</span>
+    </div>
+  </div>
+  <ol class="q-list" style="margin-top: 2.6vh;">
+    <li>Did you ever try down-market and reject it? <strong>What killed it?</strong></li>
+    <li><strong>Vertical or horizontal.</strong> Stratica X is vertical (digital infra), horizontal across the stack. How did you pick that breadth &mdash; and when does a segment's economics actually warrant going there?</li>
+    <li>If you were me, would you stay where the <em>gains</em> are, or move where the <em>dollars</em> are?</li>
+  </ol>
+  <div class="slide-footer"><span>Where I'm at &middot; What I'm asking</span><span class="num">03 / 06</span></div>
+</div>
+
+<!-- ============ 4 · SHAPE ============ -->
+<div class="slide">
+  <div class="eyebrow">Shape &middot; What the practice looks like</div>
+  <h2 class="slide-title">Three forms. <em>None committed to.</em></h2>
+  <div class="forms">
+    <div class="label">SaaS</div>
+    <div class="desc">Productized, per-door, recurring. <em>Slow to revenue. AI-eaten if the wedge is wrong.</em></div>
+
+    <div class="label">Agency</div>
+    <div class="desc">Build, train, parachute out. <em>Cash-positive. Hours-capped. Vendor-trap.</em></div>
+
+    <div class="label">Advisory</div>
+    <div class="desc">Diagnose, design, guide change. <em>Highest leverage. Credibility-gated.</em></div>
+  </div>
+  <ol class="q-list">
+    <li>How did Stratica X's shape <strong>emerge</strong> &mdash; deliberate, or shaped by the first three clients?</li>
+    <li><strong>Pricing.</strong> Retainer / project / outcome / equity. What actually captures real value in a boutique?</li>
+    <li><strong>Bench model.</strong> You activate operators on mandates. How &mdash; without W-2 overhead or contractor flake?</li>
+    <li>The <strong>first inflection moment</strong>: when did "freelancer" become "firm"?</li>
+  </ol>
+  <div class="slide-footer"><span>Where I'm at &middot; What I'm asking</span><span class="num">04 / 06</span></div>
+</div>
+
+<!-- ============ 5 · BET ============ -->
+<div class="slide">
+  <div class="eyebrow">Bet &middot; What I'm betting against</div>
+  <h2 class="slide-title">The macro questions.</h2>
+  <ol class="q-list">
+    <li><strong>18-month commoditization.</strong> Today, agentic builds are hard to learn, hard to deploy, change-management heavy. Every Frontier Lab release flattens that. <em>What's left in a boutique when the build itself is undifferentiated?</em></li>
+    <li><strong>Day-job exit timing.</strong> The trend that makes this consulting business possible is the trend that ends my Braze role. <em>Fold on my timing, or get folded?</em></li>
+    <li><strong>Geography.</strong> Build for Ontario only, or cross-border from day one? US market is <span style="font-family: 'JetBrains Mono', monospace; color: var(--ink);">10&times;</span>; ICP is different.</li>
+    <li><strong>What did you learn the expensive way</strong> in year one of Stratica X?</li>
+  </ol>
+  <div class="slide-footer"><span>Where I'm at &middot; What I'm asking</span><span class="num">05 / 06</span></div>
+</div>
+
+<!-- ============ 6 · ASKS ============ -->
+<div class="slide">
+  <div class="eyebrow">What I want from you</div>
+  <h2 class="slide-title">Three asks. <em>None of them a decision.</em></h2>
+  <ol class="q-list" style="margin-top: 1vh;">
+    <li><strong>Gut reaction on slide 3.</strong> The math says I picked the wrong segment. You picked the opposite. Was it obvious from day one, or did you arrive there?</li>
+    <li><strong>The question I'm not asking.</strong> The one I cannot prepare for, and the one most likely to change the trajectory.</li>
+    <li><strong>Permission to come back.</strong> I don't expect one conversation to give me a plan. I expect a few &mdash; if it's useful to you. If not, that's also a useful signal.</li>
+  </ol>
+  <div class="rule"></div>
+  <p class="body" style="max-width: 70ch;">In return: when useful, a tour of what AI inside the build <em>actually</em> looks like. On your time, at whatever depth helps. Thanks for the 45.</p>
+  <div class="slide-footer"><span>Lev Fendrikov &middot; admin@levelrealestate.ca</span><span class="num">06 / 06</span></div>
+</div>
+
+</div><!-- /.slide-deck -->
+
+<div class="nav-controls">
+  <button class="nav-btn" onclick="prevSlide()" aria-label="Previous">&larr;</button>
+  <span class="slide-counter"><span id="current">1</span> / <span id="total">6</span></span>
+  <button class="nav-btn" onclick="nextSlide()" aria-label="Next">&rarr;</button>
+</div>
+
+<script>
+let current = 1;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+document.getElementById('total').textContent = total;
+
+function showSlide(n) {
+  if (n < 1) n = 1;
+  if (n > total) n = total;
+  current = n;
+  slides.forEach((s, i) => s.classList.toggle('active', i === n - 1));
+  document.getElementById('current').textContent = n;
+  document.getElementById('progressBar').style.width = (n / total * 100) + '%';
+}
+function nextSlide() { showSlide(current + 1); }
+function prevSlide() { showSlide(current - 1); }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+  if (e.key === 'Home') { e.preventDefault(); showSlide(1); }
+  if (e.key === 'End') { e.preventDefault(); showSlide(total); }
+});
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.nav-controls')) nextSlide();
+});
+
+showSlide(1);
+</script>
+</body>
+</html>
